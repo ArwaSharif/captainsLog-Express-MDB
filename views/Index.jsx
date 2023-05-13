@@ -1,26 +1,29 @@
-const React = require('react');
+const React = require("react");
 
 class Index extends React.Component {
   render() {
-    const {log} = this.props.logs
-    console.log(log)
+    const { logs } = this.props;
+    console.log("idx props", logs.title);
     return (
-        <div>
-            <ul>
-            {/* {log.map((logObj, i) => {
+      <div>
+        <ul>
+          {logs.map((logObj, i) => {
                 return(
                     <li key={i}>
-                        {i}{"       "} 
+                        <a href={`/logs/${i}`}>{i}</a>{"       "} 
                         {logObj.title},
                         {logObj.entry},
-                        {logObj.shipIsBroken}
+                        {logObj.shipIsBroken
+                  ? `Ship is Broken`
+                  : `Ship is not Broken`}
                     </li>
                 )
-            })} */}
-           </ul> 
-           <br />
-           <a href='/logs/new'>Enter New Log</a>
-        </div>);
+            })}
+        </ul>
+        <br />
+        <a href="/logs/new">Enter New Log</a>
+      </div>
+    );
   }
 }
 
