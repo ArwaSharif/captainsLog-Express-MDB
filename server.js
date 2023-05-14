@@ -87,6 +87,15 @@ app.get("/logs/new", (req, res) => {
   }
 });
 
+//DELETE
+app.delete('/logs', async (req, res) =>{
+  try {
+    await Logs.findByIdAndDelete(req.params.id)
+    res.status(200).redirect('/logs')
+  } catch (err) {
+    res.status(400).send(err);
+  }
+})
 //CREATE
 app.post("/logs", async (req, res) => {
   try {

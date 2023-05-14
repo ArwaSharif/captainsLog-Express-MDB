@@ -19,9 +19,11 @@ class New extends React.Component {
           <input type="submit" value="Create Log" />
         </form>
         <hr />
-        <a href="/logs" style={{ fontSize: "10pt" }}>
-          Back to Home Page
-        </a>
+        <button>
+          <a href="/logs" style={{ textDecoration: "none", fontWeight: "bold" }}>
+            Back to Home Page
+          </a>
+        </button>
       </div>
     );
   }
