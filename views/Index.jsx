@@ -18,7 +18,7 @@ class Index extends React.Component {
               <h3 key={i} style={{ listStyle: "none" }}>
                 <a href={`/logs/${logObj._id}`}>{i}</a>
                 {"       "}
-                {capitalizeFirstLetter(logObj.title)}'s Logs
+                {capitalizeFirstLetter(logObj.title)}
               </h3>
               <button>
               <a href={`/logs/${logObj._id}/edit`} style={{ textDecoration: "none", fontWeight: "bold" }} >EDIT LOG</a>

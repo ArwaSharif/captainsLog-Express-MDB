@@ -3,7 +3,7 @@ const React = require("react");
 class Edit extends React.Component {
   render() {
     const log = this.props.logs;
-    console.log('logs',log)
+    // console.log("logs", log);
     return (
       <div style={{ textAlign: "center" }}>
         <form action={`/logs/${log._id}?_method=PUT`} method="POST">
@@ -13,14 +13,14 @@ class Edit extends React.Component {
           <br />
           <label>Edit Entry:</label>
           <br />
-          <input type="textarea" name="entry" defaultValue={`"${log.entry}"`}/>
+          <input type="textarea" name="entry" defaultValue={`"${log.entry}"`} />
           <br />
           <label>Ship is broken</label>
-          {log.shipIsBroken? 
-          <input type="checkbox" name="shipIsBroken" defaultChecked /> 
-          :
-           <input type="checkbox" name="shipIsBroken"/>}
-          {/* <input type="checkbox" name="shipIsBroken" defaultValue={log.shipIsBroken}/> */}
+          {log.shipIsBroken ? (
+            <input type="checkbox" name="shipIsBroken" defaultChecked />
+          ) : (
+            <input type="checkbox" name="shipIsBroken" />
+          )}
           <p>----------------</p>
           <input
             type="submit"
@@ -32,9 +32,9 @@ class Edit extends React.Component {
             }}
           />
         </form>
-        <br/>
-        <br/>
-        <hr/>
+        <br />
+        <br />
+        <hr />
         <br />
         <button>
           <a

@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 // SEED ROUTE
 app.get("/seed", async (req, res) => {
   try {
-    await Fruit.create([
+    await Logs.create([
       {
         title: "Today",
         entry: "Another productive day..",
@@ -58,7 +58,7 @@ app.get("/seed", async (req, res) => {
       },
     ]);
 
-    res.redirect("/fruits");
+    res.redirect("/logs");
   } catch (err) {
     res.status(400).send(err);
   }
@@ -97,20 +97,26 @@ app.delete("/logs/:id", async (req, res) => {
   }
 });
 
-
 // UPDATE
-app.put('/logs/:id/edit', async (req, res) => {
+app.put("/logs/:id", async (req, res) => {
   try {
-    const foundLogs = await Logs.findByIdAndUpdate(req.params.id)
-    res.status(200).redirect('/logs/:id')
+    //turn the shipIsBroken prop into a boolean value
+    req.body.shipIsBroken = req.body.shipIsBroken === "on";
+    const foundLogs = await Logs.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    console.log(foundLogs, "updated");
+    // res.status(200).send(foundLogs)
+    res.status(200).redirect(`/logs/${foundLogs._id}`);
   } catch (err) {
-    res.status(400).send(err)
+    res.status(400).send(err);
   }
-})
+});
 
 //CREATE
 app.post("/logs", async (req, res) => {
   try {
+    //turn the shipIsBroken prop into a boolean value
     req.body.shipIsBroken = req.body.shipIsBroken === "on";
     const newLog = await Logs.create(req.body);
     // console.log(newLog)
@@ -120,20 +126,16 @@ app.post("/logs", async (req, res) => {
   }
 });
 
-
 //EDIT
-app.get('/logs/:id/edit', async (req, res) => {
+app.get("/logs/:id/edit", async (req, res) => {
   try {
-    const foundLogs = await Logs.findById(req.params.id)
+    const foundLogs = await Logs.findById(req.params.id);
     // console.log(foundLogs)
-    res.status(200).render("Edit", {logs: foundLogs})
+    res.status(200).render("Edit", { logs: foundLogs });
   } catch (err) {
-    res.status(400).send(err)
+    res.status(400).send(err);
   }
-})
-
-
-
+});
 
 //SHOW
 app.get("/logs/:id", async (req, res) => {
@@ -145,10 +147,10 @@ app.get("/logs/:id", async (req, res) => {
   }
 });
 
-//CATCH ALL ROUTE
-// app.get("/*", (req, res) => {
-//   res.redirect("/logs");
-// });
+// CATCH ALL ROUTE
+app.get("/*", (req, res) => {
+  res.redirect("/logs");
+});
 
 // Listen
 app.listen(PORT, () => {
