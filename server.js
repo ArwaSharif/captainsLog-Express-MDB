@@ -38,31 +38,31 @@ app.use((req, res, next) => {
 });
 
 // SEED ROUTE
-// app.get("/seed", async (req, res) => {
-//   try {
-//     await Fruit.create([
-//       {
-//         title: "Captain",
-//         entry: "Another productively day..",
-//         shipIsBroken: true,
-//       },
-//       {
-//         title: "Chief Engineer",
-//         entry: "All engines working smoothly...",
-//         shipIsBroken: false,
-//       },
-//       {
-//         title: "Chief of Security",
-//         entry: "Ship shields are at 100%..",
-//         shipIsBroken: false,
-//       },
-//     ]);
+app.get("/seed", async (req, res) => {
+  try {
+    await Fruit.create([
+      {
+        title: "Today",
+        entry: "Another productive day..",
+        shipIsBroken: true,
+      },
+      {
+        title: "Tonight",
+        entry: "All engines working smoothly...",
+        shipIsBroken: false,
+      },
+      {
+        title: "Dusk",
+        entry: "Ship shields are at 100%..",
+        shipIsBroken: false,
+      },
+    ]);
 
-//     res.redirect("/fruits");
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
+    res.redirect("/fruits");
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
 
 // Routes
 //INDEX
@@ -88,14 +88,26 @@ app.get("/logs/new", (req, res) => {
 });
 
 //DELETE
-app.delete('/logs', async (req, res) =>{
+app.delete("/logs/:id", async (req, res) => {
   try {
-    await Logs.findByIdAndDelete(req.params.id)
-    res.status(200).redirect('/logs')
+    await Logs.findByIdAndDelete(req.params.id);
+    res.status(200).redirect("/logs");
   } catch (err) {
     res.status(400).send(err);
   }
+});
+
+
+// UPDATE
+app.put('/logs/:id/edit', async (req, res) => {
+  try {
+    const foundLogs = await Logs.findByIdAndUpdate(req.params.id)
+    res.status(200).redirect('/logs/:id')
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
+
 //CREATE
 app.post("/logs", async (req, res) => {
   try {
@@ -108,6 +120,21 @@ app.post("/logs", async (req, res) => {
   }
 });
 
+
+//EDIT
+app.get('/logs/:id/edit', async (req, res) => {
+  try {
+    const foundLogs = await Logs.findById(req.params.id)
+    // console.log(foundLogs)
+    res.status(200).render("Edit", {logs: foundLogs})
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+
+
+
 //SHOW
 app.get("/logs/:id", async (req, res) => {
   try {
@@ -119,9 +146,9 @@ app.get("/logs/:id", async (req, res) => {
 });
 
 //CATCH ALL ROUTE
-app.get("/*", (req, res) => {
-  res.redirect("/logs");
-});
+// app.get("/*", (req, res) => {
+//   res.redirect("/logs");
+// });
 
 // Listen
 app.listen(PORT, () => {

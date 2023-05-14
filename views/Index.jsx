@@ -9,14 +9,30 @@ class Index extends React.Component {
     // console.log("idx props", logs);
     return (
       <div style={{ textAlign: "center" }}>
+        <br />
+        <h1 style={{ color: "orangered" }}> Captain's Log </h1>
+        <hr/>
         {logs.map((logObj, i) => {
           return (
             <>
-              <h1 key={i} style={{ listStyle: "none" }}>
+              <h3 key={i} style={{ listStyle: "none" }}>
                 <a href={`/logs/${logObj._id}`}>{i}</a>
                 {"       "}
                 {capitalizeFirstLetter(logObj.title)}'s Logs
-              </h1>
+              </h3>
+              <button>
+              <a href={`/logs/${logObj._id}/edit`} style={{ textDecoration: "none", fontWeight: "bold" }} >EDIT LOG</a>
+              </button>
+              <form action={`/logs/${logObj._id}?_method=DELETE`} method="POST">
+                <input
+                  type="submit"
+                  value="DELETE LOG"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                  }}
+                />
+              </form>
               <hr />
             </>
           );

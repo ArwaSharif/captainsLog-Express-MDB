@@ -15,9 +15,15 @@ class New extends React.Component {
           <br />
           <label>Ship is broken</label>
           <input type="checkbox" name="shipIsBroken" />
-          <br />
-          <input type="submit" value="Create Log" />
+          <p>----------------</p>
+          <input type="submit" value="Create Log" style={{
+              fontSize: "11pt",
+              textDecoration: "none",
+              fontWeight: "bold",
+            }}/>
         </form>
+        <br />
+        <br />
         <hr />
         <button>
           <a href="/logs" style={{ textDecoration: "none", fontWeight: "bold" }}>
