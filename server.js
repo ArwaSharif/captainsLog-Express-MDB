@@ -42,9 +42,9 @@ app.use("/logs", logsController);
 
 
 // CATCH ALL ROUTE
-// app.get("/*", (req, res) => {
-//   res.redirect("/logs");
-// });
+app.get("/*", (req, res) => {
+  res.redirect("/logs");
+});
 
 
 // Listen

@@ -3,7 +3,6 @@ const router = express.Router();
 const Logs = require('../models/logs')
 
 
-
 // SEED ROUTE
 router.get("/seed", async (req, res) => {
   try {
@@ -37,7 +36,7 @@ router.get("/", async (req, res) => {
   console.log("Index Controller Func. running...");
   try {
     const foundLogs = await Logs.find({});
-    console.log('index logs', foundLogs)
+    // console.log('index logs', foundLogs)
     res.status(200).render("Index", { logs: foundLogs });
   } catch (err) {
     res.status(400).send(err);
@@ -72,7 +71,7 @@ router.put("/:id", async (req, res) => {
     const foundLogs = await Logs.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    console.log(foundLogs, "updated");
+    // console.log(foundLogs, "updated");
     // res.status(200).send(foundLogs)
     res.status(200).redirect(`/logs/${foundLogs._id}`);
   } catch (err) {
