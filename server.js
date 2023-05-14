@@ -2,11 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const Logs = require("./models/logs");
 const { connect, connection } = require("mongoose");
 // const connectDB = require("./config/database");
 const methodOverride = require("method-override");
-// const Controller = require("./controllers/Controller");
+const logsController = require('./controllers/logsController')
 
 // Database connection
 connect(process.env.MONGO_URI, {
@@ -20,7 +19,7 @@ connection.once("open", () => {
 // View Engine Middleware Configure
 const reactViewsEngine = require("jsx-view-engine").createEngine();
 app.engine("jsx", reactViewsEngine);
-// This line sets the render method's default location to look for a jsx file to render. Without this line of code we would have to specific the views directory everytime we use the render method
+// This line sets the render method's default location to look for a jsx file to render. Without this line of code we would have to specify the views directory everytime we use the render method
 app.set("views", "./views");
 // This line tells the render method the default file extension to look for.
 app.set("view engine", "jsx");
@@ -37,120 +36,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// SEED ROUTE
-app.get("/seed", async (req, res) => {
-  try {
-    await Logs.create([
-      {
-        title: "Today",
-        entry: "Another productive day..",
-        shipIsBroken: true,
-      },
-      {
-        title: "Tonight",
-        entry: "All engines working smoothly...",
-        shipIsBroken: false,
-      },
-      {
-        title: "Dusk",
-        entry: "Ship shields are at 100%..",
-        shipIsBroken: false,
-      },
-    ]);
+//Routes
+//when the client makes a request to logs, the server will redirect to the controller router controllers
+app.use("/logs", logsController);
 
-    res.redirect("/logs");
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-// Routes
-//INDEX
-app.get("/logs", async (req, res) => {
-  console.log("Index Controller Func. running...");
-  try {
-    const foundLogs = await Logs.find({});
-    // console.log('index logs', foundLogs)
-    res.status(200).render("Index", { logs: foundLogs });
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-// NEW
-//DEBUGGED I had the route as /logs/new and the middleware was running non-stop
-app.get("/logs/new", (req, res) => {
-  try {
-    res.status(200).render("New");
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-//DELETE
-app.delete("/logs/:id", async (req, res) => {
-  try {
-    await Logs.findByIdAndDelete(req.params.id);
-    res.status(200).redirect("/logs");
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-// UPDATE
-app.put("/logs/:id", async (req, res) => {
-  try {
-    //turn the shipIsBroken prop into a boolean value
-    req.body.shipIsBroken = req.body.shipIsBroken === "on";
-    const foundLogs = await Logs.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    console.log(foundLogs, "updated");
-    // res.status(200).send(foundLogs)
-    res.status(200).redirect(`/logs/${foundLogs._id}`);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-//CREATE
-app.post("/logs", async (req, res) => {
-  try {
-    //turn the shipIsBroken prop into a boolean value
-    req.body.shipIsBroken = req.body.shipIsBroken === "on";
-    const newLog = await Logs.create(req.body);
-    // console.log(newLog)
-    res.redirect("/logs");
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-//EDIT
-app.get("/logs/:id/edit", async (req, res) => {
-  try {
-    const foundLogs = await Logs.findById(req.params.id);
-    // console.log(foundLogs)
-    res.status(200).render("Edit", { logs: foundLogs });
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-//SHOW
-app.get("/logs/:id", async (req, res) => {
-  try {
-    const foundLogs = await Logs.findById(req.params.id);
-    res.status(200).render("Show", { logs: foundLogs });
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
 
 // CATCH ALL ROUTE
-app.get("/*", (req, res) => {
-  res.redirect("/logs");
-});
+// app.get("/*", (req, res) => {
+//   res.redirect("/logs");
+// });
+
 
 // Listen
 app.listen(PORT, () => {
