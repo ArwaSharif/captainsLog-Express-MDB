@@ -20,11 +20,20 @@ class Show extends React.Component {
             : `"Ship is not broken"`}
         </h2>
         <p>-----------------------</p>
-        <h5>Date of Entry:</h5>
+        {logs.createdAt < logs.updatedAt ?
+        (<>
+        <h5>Date Updated:</h5>
+          <h6> {format(logs.updatedAt , "MM-dd-yyyy HH:mm:SS aaaa")}</h6>
+          </>
+          )
+          :
+          (<>
+        <h5>Date Created :</h5>
         <h6 style={{ color: "orangered" }}>
-          {format(logs.createdAt, "MM-dd-yyyy HH:mm:SS aaaa")}
+          {format(logs.createdAt, "MM-dd-yyyy HH:mm:SS aaaa")}  
         </h6>
-        {/* <br /> */}
+          </>
+          )}
         <hr />
         <button>
           <a
